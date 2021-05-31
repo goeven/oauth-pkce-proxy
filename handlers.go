@@ -152,6 +152,7 @@ func Token(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, string(e.Body), e.Response.StatusCode)
 		return
 	} else if err != nil {
+		log.Printf("Failed to exchange token: %v", err)
 		oauthError(w, "unauthorized_client", http.StatusBadRequest)
 		return
 	}
