@@ -5,7 +5,6 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"errors"
-	"log"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -86,7 +85,6 @@ func AuthorizationCodeClaimsToJWT(challenge, code string) (string, error) {
 }
 
 func ParseAuthorizationCodeClaims(tokenStr string) (challenge, code string, err error) {
-	log.Println(tokenStr)
 	token, err := jwt.ParseWithClaims(tokenStr, &AuthorizationCodeClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return config.JWT.SigningKey, nil
 	})
