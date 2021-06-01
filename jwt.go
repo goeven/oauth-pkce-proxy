@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	jwtLifetime = 30 * time.Second
+	clientJWTLifetime                  = 5 * time.Minute
+	downstreamAuthorizationJWTLifetime = 30 * time.Second
 )
 
 type ClientClaims struct {
@@ -38,7 +39,7 @@ func ClientClaimsToJWT(challenge, state, redirectURI string) (string, error) {
 		State:         state,
 		RedirectURI:   redirectURI,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(jwtLifetime).Unix(),
+			ExpiresAt: time.Now().Add(clientJWTLifetime).Unix(),
 		},
 	}
 
@@ -76,7 +77,7 @@ func AuthorizationCodeClaimsToJWT(challenge, code string) (string, error) {
 		CodeChallenge:     challenge,
 		AuthorizationCode: string(encCode),
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(jwtLifetime).Unix(),
+			ExpiresAt: time.Now().Add(downstreamAuthorizationJWTLifetime).Unix(),
 		},
 	}
 
